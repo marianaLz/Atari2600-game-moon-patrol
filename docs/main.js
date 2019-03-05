@@ -6,6 +6,17 @@ var frames = 0;
 var score = 0;
 var impacts = 0;
 var shots = 0;
+var audio = new Audio();
+    audio.src = "./sounds/Moon Patrol Music - Atari 2600.mp3"
+    audio.loop = true;
+var jump = new Audio();
+    jump.src = "./sounds/Jump Sound Effect.mp3"
+var shooting = new Audio();
+   // shooting.src =
+var dead = new Audio();
+    dead.src = "./sounds/dead enemy.mp3"
+var gOver = new Audio();
+    gOver.src = "./sounds/Game over.mp3"
 
 class Background {
     constructor() {
@@ -18,13 +29,35 @@ class Background {
     }
     gameOver() {
         clearInterval(interval);
+        ctx.fillStyle = 'mediumorchid';
+        ctx.fillRect(297, 147, 406, 206);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(300, 150, 400, 200);
+        ctx.fillStyle = 'white';
         ctx.font = "50px VT323";
-        ctx.fillText ("GAME OVER", 250, 190);
+        ctx.fillText ("GAME OVER", 410, 210);
+        ctx.font = "40px VT323";
+        ctx.fillText ("YOUR SCORE " + score, 380, 250);
+        audio.pause();
+        gOver.play();
+        interval = null;
+        restartButton.removeAttribute("class","disp");
     }
     gameComplete() {
         clearInterval(interval);
+        ctx.fillStyle = 'mediumorchid';
+        ctx.fillRect(297, 147, 406, 206);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(300, 150, 400, 200);
+        ctx.fillStyle = 'white';
         ctx.font = "50px VT323";
-        ctx.fillText ("GANASTE", 250, 190);
+        ctx.fillText ("YOU WIN!", 425, 210);
+        ctx.font = "40px VT323";
+        ctx.fillText ("YOUR SCORE " + score, 380, 250);
+        audio.pause();
+        gOver.play();
+        interval = null;
+        restartButton.removeAttribute("class","disp");
     }
     draw(){
         this.x--;
@@ -36,7 +69,7 @@ class Background {
 
 class HealthBar {
     constructor(){
-        this.x = 20;
+        this.x = 470;
         this.y = 0;
         this.width = 110;
         this.height = 75;
@@ -365,11 +398,13 @@ function drawBullets() {
                 if(bullet.collision(enemy)) {
                     shipRightBullets.splice(i, 1)
                     enemies.splice(index, 1)
+                    dead.play();
                     score += 50;
                 } 
             })
             if (finalEnemy.visible == true && bullet.collision(finalEnemy)) {
                 shipRightBullets.splice(i, 1)
+                dead.play();
                 score += 100;
                 shots ++;
             }
@@ -385,6 +420,7 @@ function drawBullets() {
                 if(bullet.collision(skyEnemy1)) {
                     shipUpBullets.splice(i, 1)
                     skyEnemies1.splice(index, 1)
+                    dead.play();
                     score += 50;
                 }
             })
@@ -392,6 +428,7 @@ function drawBullets() {
                 if(bullet.collision(skyEnemy2)) {
                     shipUpBullets.splice(i, 1)
                     skyEnemies2.splice(index, 1)
+                    dead.play();
                     score += 50;
                 }
             })
@@ -429,37 +466,8 @@ function game_Over() {
     }
 }
 
-/*var interval = setInterval(function(){
-    frames++;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    background.draw();
-    ship.draw();
-    healthBar.draw();
-    ctx.fillStyle = 'white'
-    ctx.font = "25px VT323";
-    ctx.fillText('SCORE ' + score, 860, 45);
-    ctx.fillText('IMPACTS ' + impacts, 455, 45);
-    generateCraters();
-    drawCraters();
-    generateEnemies();
-    drawEnemies();
-    generateSkyEnemies();
-    drawSkyEnemies();
-    generateFinalEnemy();
-    drawBullets();
-    generateFinalEnemyBullet();
-    drawFinalEnemyBullet();
-    ship.velxl *= ship.friction;
-    ship.velxr *= ship.friction;
-    if (ship.x + ship.velxl < 880) ship.x += ship.velxl;
-    if (ship.x - ship.velxr > 15) ship.x += ship.velxr;
-    game_Over();
-},1000/75);*/
-
 window.onload = function(){
-    function startGame() {
-        startedGame = true;
-        interval = setInterval(function(){
+    function update(){
         frames++;
         ctx.clearRect(0,0,canvas.width,canvas.height);
         background.draw();
@@ -467,8 +475,8 @@ window.onload = function(){
         healthBar.draw();
         ctx.fillStyle = 'white'
         ctx.font = "25px VT323";
-        ctx.fillText('SCORE ' + score, 860, 45);
-        ctx.fillText('IMPACTS ' + impacts, 455, 45);
+        ctx.fillText('SCORE ' + score, 40, 45);
+        ctx.fillText('IMPACTS ' + impacts, 270, 45);
         generateCraters();
         drawCraters();
         generateEnemies();
@@ -484,13 +492,48 @@ window.onload = function(){
         if (ship.x + ship.velxl < 880) ship.x += ship.velxl;
         if (ship.x - ship.velxr > 15) ship.x += ship.velxr;
         game_Over();
-        },1000/75);
     }
-    document.getElementById("start-button").onclick = function() {
+
+    function startGame() {
+        startedGame = true;
+        interval = setInterval(update, 1000/75);
+        audio.play();
+    }
+
+    function restart(){
+        frames = 0;        
+        score = 0;
+        impacts = 0;
+        shots = 0;
+        craters = [];
+        enemies = [];
+        skyEnemies1 = [];
+        skyEnemies2 = [];
+        shipRightBullets = [];
+        shipUpBullets = [];
+        skyEnemy1Bullets = [];
+        skyEnemy2Bullets = [];
+        finalEnemyBullets = [];
+        ship.x = 440;
+        ship.y = 300;
+        audio.currentTime = 0;
+        startGame();
+    }
+
+    document.getElementById("startButton").onclick = function() {
+        startButton.setAttribute("class","disp");
+        shipp.setAttribute("class", "disp");
+        instructions.setAttribute("class", "disp");
         if(!interval){
             startGame();
         }
-       
+    };
+
+    document.getElementById("restartButton").onclick = function() {
+        restartButton.setAttribute("class","disp");
+        if(!interval){
+            restart();
+        }
     };
 }
 
@@ -507,13 +550,16 @@ addEventListener('keydown', function(event){
     }
     if(event.keyCode === 32 && ship.y >= 120){
         ship.y -= 120;
+        jump.play();
     }
     if(event.keyCode === 40){
         bullet.direction = 'right';
         shipRightBullets.push(new Bullet('right', ship.x, ship.y));
+        shooting.play();
     }
     if(event.keyCode === 38){
         bullet.direction = 'up';
         shipUpBullets.push(new Bullet('up', ship.x, ship.y));
+        shooting.play();
     }
 })

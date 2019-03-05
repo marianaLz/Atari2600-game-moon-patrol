@@ -4,16 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css" />
   <link rel="stylesheet" href="styles.css">
+  <link rel="shortcut icon" href="./images/nave1.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
   <title>Moon patrol</title>
 </head>
 <body>
-  <img src="./images/logo.jpg" alt="" style="width:20%;">
-  <br>
-  <button id="start-button"><b>START</b></button>
-  <div id="game-board"></div>
-  <canvas id="canvas" width="1000" height="500"></canvas>
+  <div id="center">
+    <img id="logo" src="./images/logo.jpg" alt="moon-patrol-logo" style="width:20%;">
+    <div id="game-board"></div>
+    <canvas id="canvas" width="1000" height="500"></canvas>
+  </div>
+  <img id="shipp" src="./images/main-background.png" alt="moon-patrol-ship" style="width:50%;">
+  <button id="startButton" class="uk-button"><b>START GAME</b></button>
+  <button id="restartButton" class="disp"><b>RESTART</b></button>
+  <button id="instructions" class="uk-button uk-button-danger" uk-toggle="target: #inst" type="button"><b>INSTRUCTIONS</b></button>
+  <div id="inst" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <h3 class="uk-modal-title">Instructions</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+  </div>
   <script src="main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
 </body>
 </html>
