@@ -38,10 +38,10 @@ class Background {
         ctx.fillStyle = 'black';
         ctx.fillRect(300, 150, 400, 200);
         ctx.fillStyle = 'white';
-        ctx.font = "50px VT323";
-        ctx.fillText ("GAME OVER", 410, 210);
-        ctx.font = "40px VT323";
-        ctx.fillText ("YOUR SCORE " + score, 380, 250);
+        ctx.font = "25px pixelart";
+        ctx.fillText ("GAME OVER", 390, 210);
+        ctx.font = "20px pixelart";
+        ctx.fillText ("YOUR SCORE " + score, 350, 250);
         audio.pause();
         gOver.play();
         interval = null;
@@ -55,10 +55,10 @@ class Background {
         ctx.fillStyle = 'black';
         ctx.fillRect(300, 150, 400, 200);
         ctx.fillStyle = 'white';
-        ctx.font = "50px VT323";
-        ctx.fillText ("YOU WIN!", 425, 210);
-        ctx.font = "40px VT323";
-        ctx.fillText ("YOUR SCORE " + score, 380, 250);
+        ctx.font = "25px pixelart";
+        ctx.fillText ("YOU WIN!", 400, 210);
+        ctx.font = "20px pixelart";
+        ctx.fillText ("YOUR SCORE " + score, 350, 250);
         audio.pause();
         gComplete.play();
         interval = null;
@@ -500,6 +500,26 @@ function drawRightBullets() {
                 score += 50;
             } 
         })
+        skyEnemies1.forEach((skyEnemy1, index) => {
+            if(rightBullet.collision(skyEnemy1)) {
+                let explosion = new Explosion (skyEnemy1.x, skyEnemy1.y, skyEnemy1.width, skyEnemy1.height);
+                explosion.draw();
+                shipRightBullets.splice(i, 1)
+                skyEnemies1.splice(index, 1)
+                dead.play();
+                score += 50;
+            } 
+        })
+        skyEnemies2.forEach((skyEnemy2, index) => {
+            if(rightBullet.collision(skyEnemy2)) {
+                let explosion = new Explosion (skyEnemy2.x, skyEnemy2.y, skyEnemy2.width, skyEnemy2.height);
+                explosion.draw();
+                shipRightBullets.splice(i, 1)
+                skyEnemies2.splice(index, 1)
+                dead.play();
+                score += 50;
+            } 
+        })
         if (finalEnemy.visible == true && rightBullet.collision(finalEnemy)) {
             shipRightBullets.splice(i, 1)
             dead.play();
@@ -582,7 +602,7 @@ window.onload = function(){
         ship.draw();
         healthBar.draw();
         ctx.fillStyle = 'white'
-        ctx.font = "25px VT323";
+        ctx.font = "13px pixelart";
         ctx.fillText('SCORE ' + score, 40, 45);
         ctx.fillText('IMPACTS ' + impacts, 270, 45);
         generateCraters();
