@@ -88,7 +88,14 @@ body #main:hover {
     transition: all .3s;
 }
 
-body #sound {
+body #soundOn {
+    cursor: pointer;
+    margin-left: 1040px;
+    margin-top: -482px;
+    position: absolute;
+}
+
+body #soundOff {
     cursor: pointer;
     margin-left: 1040px;
     margin-top: -482px;

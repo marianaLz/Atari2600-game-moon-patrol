@@ -582,8 +582,10 @@ window.onload = function(){
     document.getElementById("startButton").onclick = function() {
         startButton.setAttribute("class","disp");
         shipp.setAttribute("class", "disp");
-        sound.removeAttribute("class", "disp");
-        sound.setAttribute("class", "uk-icon-button");
+        soundOn.removeAttribute("class", "disp");
+        soundOn.setAttribute("class", "uk-icon-button");
+        soundOff.removeAttribute("class", "disp");
+        soundOff.setAttribute("class", "uk-icon-button");
         instructions.setAttribute("class", "disp");
         if(!interval){
             startGame();
@@ -593,6 +595,10 @@ window.onload = function(){
     document.getElementById("restartButton").onclick = function() {
         restartButton.setAttribute("class","disp");
         main.setAttribute("class","disp");
+        soundOn.removeAttribute("class", "disp");
+        soundOn.setAttribute("class", "uk-icon-button");
+        soundOff.removeAttribute("class", "disp");
+        soundOff.setAttribute("class", "uk-icon-button");
         if(!interval){
             restart();
         }
@@ -602,7 +608,10 @@ window.onload = function(){
         location.reload(true);
     };
 
-    document.getElementById("sound").onclick = function() {
+    document.getElementById("soundOn").onclick = function() {
+        soundOn.setAttribute("class", "disp");
+        soundOff.removeAttribute("class", "disp");
+        soundOff.setAttribute("class", "uk-icon-button");
         audio.pause();
         jump.src = undefined;
         impact.src = undefined;
@@ -611,6 +620,20 @@ window.onload = function(){
         gOver.src = undefined;
         gComplete.src = undefined;
     }
+
+    document.getElementById("soundOff").onclick = function(){
+        soundOff.setAttribute("class", "disp");
+        soundOn.removeAttribute("class", "disp");
+        soundOn.setAttribute("class", "uk-icon-button");
+        audio.play();
+        jump.src = "./sounds/jump.mp3";
+        impact.src = "./sounds/impact.mp3";
+        shooting.src = "./sounds/shot.mp3";
+        dead.src = "./sounds/dead enemy.mp3";
+        gOver.src = "./sounds/game over.mp3";
+        gComplete.src = "./sounds/winner.mp3";
+    }
+    
 }
 
 addEventListener('keydown', function(event){
