@@ -22,11 +22,11 @@ body #shipp {
 body #startButton {
     cursor: pointer;
     font-size: 20px;
-    background-color: rgba(144, 238, 144, 0.897);
+    background-color: rgba(144, 238, 144, 0.95);
     color: black;
     padding: 5px 10px;
     border-radius: 5px;
-    margin-left: 803px;
+    margin-left: 823px;
     margin-top: -315px;
     position: absolute;
 }
@@ -41,12 +41,12 @@ body #restartButton {
     cursor: pointer;
     font-size: 20px;
     font-family: "Segoe UI";
-    background-color: rgba(144, 238, 144, 0.897);
+    background-color: rgba(144, 238, 144, 0.95);
     color: black;
     padding: 10px 10px;
     border: 0;
     border-radius: 5px;
-    margin-left: 570px;
+    margin-left: 480px;
     margin-top: -220px;
     position: absolute;
 }
@@ -63,8 +63,35 @@ body #instructions {
     color: black;
     padding: 5px 10px;
     border-radius: 5px;
-    margin-left: 790px;
+    margin-left: 810px;
     margin-top: -240px;
+    position: absolute;
+}
+
+body #main {
+    cursor: pointer;
+    font-size: 20px;
+    font-family: "Segoe UI";
+    background-color: rgba(255, 192, 203, 0.9);
+    color: black;
+    padding: 10px 10px;
+    border: 0;
+    border-radius: 5px;
+    margin-left: 620px;
+    margin-top: -220px;
+    position: absolute;
+}
+
+body #main:hover {
+    cursor: pointer;
+    background-color: pink;
+    transition: all .3s;
+}
+
+body #sound {
+    cursor: pointer;
+    margin-left: 1040px;
+    margin-top: -482px;
     position: absolute;
 }
 
@@ -73,6 +100,8 @@ body #instructions {
 body .uk-modal-dialog {
     background: lightgrey;
     color: black;
+    border-radius: 20px;
+    text-align: center;
 }
 
 canvas{

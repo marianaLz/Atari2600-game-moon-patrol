@@ -7,16 +7,20 @@ var score = 0;
 var impacts = 0;
 var shots = 0;
 var audio = new Audio();
-    audio.src = "./sounds/Moon Patrol Music - Atari 2600.mp3"
+    audio.src = "./sounds/Moon Patrol - Atari 2600.mp3"
     audio.loop = true;
 var jump = new Audio();
-    jump.src = "./sounds/Jump Sound Effect.mp3"
+    jump.src = "./sounds/jump.mp3"
+var impact = new Audio();
+    impact.src = "./sounds/impact.mp3"
 var shooting = new Audio();
-   // shooting.src =
+    shooting.src = "./sounds/shot.mp3"
 var dead = new Audio();
     dead.src = "./sounds/dead enemy.mp3"
 var gOver = new Audio();
-    gOver.src = "./sounds/Game over.mp3"
+    gOver.src = "./sounds/game over.mp3"
+var gComplete = new Audio();
+    gComplete.src = "./sounds/winner.mp3"
 
 class Background {
     constructor() {
@@ -42,6 +46,7 @@ class Background {
         gOver.play();
         interval = null;
         restartButton.removeAttribute("class","disp");
+        main.removeAttribute("class","disp");
     }
     gameComplete() {
         clearInterval(interval);
@@ -55,9 +60,10 @@ class Background {
         ctx.font = "40px VT323";
         ctx.fillText ("YOUR SCORE " + score, 380, 250);
         audio.pause();
-        gOver.play();
+        gComplete.play();
         interval = null;
         restartButton.removeAttribute("class","disp");
+        main.removeAttribute("class","disp");
     }
     draw(){
         this.x--;
@@ -77,6 +83,7 @@ class HealthBar {
         this.image.src = './images/h1.png';
     }
     draw(){
+        if (impacts < 3) this.image.src = './images/h1.png';
         if (impacts > 2) this.image.src = './images/h2.png';
         if (impacts > 5) this.image.src = './images/h3.png';
         if (impacts > 8) this.image.src = './images/h4.png';
@@ -103,7 +110,7 @@ class Ship {
         this.velxl = 0;
         this.velxr = 0;
         this.x = 440;
-        this.y = 300;
+        this.y = 70;
         this.width = 120;
         this.height = 70;
     }
@@ -114,7 +121,7 @@ class Ship {
             (this.y + this.height > item.y);
     }
     draw(){
-        if(this.y < 360) this.y += 2;
+        if(this.y < 350) this.y += 2;
         if(frames % 15 === 0){
              this.image = this.image == this.image1 ? this.image2 : this.image1;
         }
@@ -201,26 +208,73 @@ class SkyEnemy2 {
 class FinalEnemy {
     constructor() {
         this.x = 700;
-        this.y = 350;
-        this.width = 100;
-        this.height = 80;
+        this.y = 360;
+        this.width = 120;
+        this.height = 70;
         this.image = new Image();
-        this.image.src = "./images/finalEnemy.png";
+        this.image1 = new Image();
+        this.image1.src = './images/finalEnemy.png';
+        this.image2 = new Image();
+        this.image2.src = './images/finalEnemyy.png';
+        this.image = this.image1;
         this.visible = false;
     }
     draw(){
+        if(frames % 20 === 0){
+            this.image = this.image == this.image1 ? this.image2 : this.image1;
+       }
+       ctx.drawImage(this.image, this.x, this.y, this.width,this.height);
+    }
+}
+
+class RightBullet {
+    constructor(x, y) {
+        this.x = x + 100;
+        this.y = y + 45;
+        this.width = 20;
+        this.height = 3;
+        this.image = new Image();
+        this.image.src = './images/rightBullet.png';
+    }
+    collision(item){
+        return (this.x < item.x + item.width) &&
+            (this.x + this.width > item.x) &&
+            (this.y < item.y + item.height) &&
+            (this.y + this.height > item.y);
+    }
+    draw () { 
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
 
-class Bullet {
-    constructor(direction, x, y) {
-        this.x = x + 60;
-        this.y = y + 30;
-        this.width = 20;
-        this.height = 3;
+class UpBullet {
+    constructor(x, y) {
+        this.x = x + 58;
+        this.y = y;
+        this.width = 3;
+        this.height = 20;
         this.image = new Image();
-        this.image.src = "./images/rightBullet.png";
+        this.image.src = './images/upBullet.png';
+    }
+    collision(item){
+        return (this.x < item.x + item.width) &&
+            (this.x + this.width > item.x) &&
+            (this.y < item.y + item.height) &&
+            (this.y + this.height > item.y);
+    }
+    draw () { 
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+}
+
+class EnemyBullet {
+    constructor(direction, x, y) {
+        this.x = x;
+        this.y = y;
+        this.width = 3;
+        this.height = 20;
+        this.image = new Image();
+        this.image.src = './images/enemyBullet.png';
         this.direction = direction;
     }
     collision(item){
@@ -229,12 +283,7 @@ class Bullet {
             (this.y < item.y + item.height) &&
             (this.y + this.height > item.y);
     }
-    draw () {
-        if (this.direction === 'up'){
-            this.image.src = './images/upBullet.png'; 
-            this.width = 3; 
-            this.height = 20;
-        } 
+    draw () { 
         if (this.direction === 'enemy'){
             this.image.src = './images/enemyBullet.png';
             this.width = 20; 
@@ -258,7 +307,9 @@ var background = new Background();
 var healthBar = new HealthBar();
 var ship = new Ship();
 var finalEnemy = new FinalEnemy();
-var bullet = new Bullet('right');
+var rightBullet = new RightBullet();
+var upBullet = new UpBullet();
+var enemybullet = new EnemyBullet();
 var craters = [];
 var enemies = [];
 var skyEnemies1 = [];
@@ -270,7 +321,7 @@ var skyEnemy2Bullets = [];
 var finalEnemyBullets = [];
 
 function generateCraters() {
-    if (frames <= 5400 && (frames % 220 == 0 || frames % 550 == 0)) {
+    if (frames <= 6900 && (frames % 220 == 0 || frames % 550 == 0)) {
         let crater = new Crater();
         craters.push(crater);
     }
@@ -284,6 +335,7 @@ function drawCraters() {
         } 
         crater.draw();
         if(ship.collision(crater)){
+            impact.play();
             craters.splice(index, 1); 
             impacts++;
         }
@@ -291,7 +343,7 @@ function drawCraters() {
 }
 
 function generateEnemies() {
-    if (frames >= 1200 && frames <= 5400 && (frames % 280 == 0 || frames % 1000 == 0)){
+    if (frames >= 1200 && frames <= 6900 && (frames % 280 == 0 || frames % 1000 == 0)){
         let enemy = new Enemy();
         enemies.push(enemy);
     }
@@ -304,6 +356,7 @@ function drawEnemies() {
         } 
         enemy.draw();
         if(ship.collision(enemy)){
+            impact.play();
             enemies.splice(index, 1);
             impacts++;
         }
@@ -315,13 +368,13 @@ function randomNum(max, min){
 }
 
 function generateSkyEnemies() {
-    if (frames >= 3000 && frames <= 5400 && (frames % 300 == 0 || frames && 1000 == 0)){
+    if (frames >= 3000 && frames <= 6900 && (frames % 300 == 0 || frames && 1000 == 0)){
         let posy1 = randomNum(40, 200)
         let posy2 = randomNum(40, 200)
         let skyEnemy1 = new SkyEnemy1(0, posy1);
         let skyEnemy2 = new SkyEnemy2(canvas.width, posy2);
-        let skyEnemy1Bullet = new Bullet('sky1', skyEnemy1.x, skyEnemy1.y);
-        let skyEnemy2Bullet = new Bullet('sky2', skyEnemy2.x, skyEnemy2.y);
+        let skyEnemy1Bullet = new EnemyBullet('sky1', skyEnemy1.x, skyEnemy1.y);
+        let skyEnemy2Bullet = new EnemyBullet('sky2', skyEnemy2.x, skyEnemy2.y);
         skyEnemies1.push(skyEnemy1);
         skyEnemies2.push(skyEnemy2);
         skyEnemy1Bullets.push(skyEnemy1Bullet);
@@ -337,6 +390,7 @@ function drawSkyEnemies() {
         } 
         skyEnemy1.draw();
         if(ship.collision(skyEnemy1)){
+            impact.play();
             skyEnemies1.splice(index, 1);
             impacts++;
         }
@@ -348,6 +402,7 @@ function drawSkyEnemies() {
             }
             skyEnemy1Bullet.draw();
             if (skyEnemy1Bullet.collision(ship)) {
+                impact.play();
                 skyEnemy1Bullets.splice(i, 1)
                 impacts++;
             } 
@@ -360,6 +415,7 @@ function drawSkyEnemies() {
         } 
         skyEnemy2.draw();
         if(ship.collision(skyEnemy2)){
+            impact.play();
             skyEnemies2.splice(index, 1);
             impacts++;
         }
@@ -371,6 +427,7 @@ function drawSkyEnemies() {
             }
             skyEnemy2Bullet.draw();
             if (skyEnemy2Bullet.collision(ship)) {
+                impact.play();
                 skyEnemy2Bullets.splice(i, 1)
                 impacts++;
             } 
@@ -379,67 +436,67 @@ function drawSkyEnemies() {
 }
 
 function generateFinalEnemy() {
-    if (frames >= 6000){
+    if (frames >= 6900){
         ship.x = 200;
         finalEnemy.draw();
         finalEnemy.visible = true;
     }
 }
 
-function drawBullets() {
-    if (bullet.direction === 'right'){
-        shipRightBullets.forEach((bullet, i) => {
-            bullet.x += 10;
-            if(bullet.x > canvas.width){
-            return shipRightBullets.splice(i, 1);
-            } 
-            bullet.draw();
-            enemies.forEach((enemy, index) => {
-                if(bullet.collision(enemy)) {
-                    shipRightBullets.splice(i, 1)
-                    enemies.splice(index, 1)
-                    dead.play();
-                    score += 50;
-                } 
-            })
-            if (finalEnemy.visible == true && bullet.collision(finalEnemy)) {
+function drawRightBullets() {
+    shipRightBullets.forEach((rightBullet, i) => {
+        rightBullet.x += 10;
+        if(rightBullet.x > canvas.width){
+        return shipRightBullets.splice(i, 1);
+        } 
+        rightBullet.draw();
+        enemies.forEach((enemy, index) => {
+            if(rightBullet.collision(enemy)) {
                 shipRightBullets.splice(i, 1)
+                enemies.splice(index, 1)
                 dead.play();
-                score += 100;
-                shots ++;
+                score += 50;
+            } 
+        })
+        if (finalEnemy.visible == true && rightBullet.collision(finalEnemy)) {
+            shipRightBullets.splice(i, 1)
+            dead.play();
+            score += 100;
+            shots ++;
+        }
+    });
+}
+
+function drawUpBullets() {
+    shipUpBullets.forEach((upBullet, i) => {
+        upBullet.y -= 10;
+        if(upBullet.y < -canvas.height){
+        return shipUpBullets.splice(i, 1);
+        }
+        upBullet.draw();
+        skyEnemies1.forEach((skyEnemy1, index) => {
+            if(upBullet.collision(skyEnemy1)) {
+                shipUpBullets.splice(i, 1)
+                skyEnemies1.splice(index, 1)
+                dead.play();
+                score += 50;
             }
-        });
-    } else if (bullet.direction === 'up'){
-        shipUpBullets.forEach((bullet, i) => {
-            bullet.y -= 10;
-            if(bullet.y < -canvas.height){
-            return shipUpBullets.splice(i, 1);
+        })
+        skyEnemies2.forEach((skyEnemy2, index) => {
+            if(upBullet.collision(skyEnemy2)) {
+                shipUpBullets.splice(i, 1)
+                skyEnemies2.splice(index, 1)
+                dead.play();
+                score += 50;
             }
-            bullet.draw();
-            skyEnemies1.forEach((skyEnemy1, index) => {
-                if(bullet.collision(skyEnemy1)) {
-                    shipUpBullets.splice(i, 1)
-                    skyEnemies1.splice(index, 1)
-                    dead.play();
-                    score += 50;
-                }
-            })
-            skyEnemies2.forEach((skyEnemy2, index) => {
-                if(bullet.collision(skyEnemy2)) {
-                    shipUpBullets.splice(i, 1)
-                    skyEnemies2.splice(index, 1)
-                    dead.play();
-                    score += 50;
-                }
-            })
-        });
-    } 
+        })
+    });
 }
 
 function generateFinalEnemyBullet() {
-    if (frames >= 6000 && frames % 120 == 0){
-        let posY = randomNum(finalEnemy.y, finalEnemy.y + 30)
-        let finalEnemyBullet = new Bullet('enemy', finalEnemy.x, posY - 30);
+    if (frames >= 6900 && frames % 120 == 0){
+        let posY = randomNum(finalEnemy.y, finalEnemy.y + 50)
+        let finalEnemyBullet = new Bullet('enemy', finalEnemy.x, posY);
         finalEnemyBullets.push(finalEnemyBullet);
     }
 }
@@ -452,6 +509,7 @@ function drawFinalEnemyBullet() {
         }
         finalEnemyBullet.draw();
         if (finalEnemyBullet.collision(ship)) {
+            impact.play();
             finalEnemyBullets.splice(i, 1)
             impacts++;
         } 
@@ -459,7 +517,7 @@ function drawFinalEnemyBullet() {
 }
 
 function game_Over() {
-    if (impacts >= 30) {
+    if (impacts > 30) {
         background.gameOver();
     } else if (shots >= 50){
         background.gameComplete();
@@ -484,7 +542,8 @@ window.onload = function(){
         generateSkyEnemies();
         drawSkyEnemies();
         generateFinalEnemy();
-        drawBullets();
+        drawRightBullets();
+        drawUpBullets();
         generateFinalEnemyBullet();
         drawFinalEnemyBullet();
         ship.velxl *= ship.friction;
@@ -523,6 +582,8 @@ window.onload = function(){
     document.getElementById("startButton").onclick = function() {
         startButton.setAttribute("class","disp");
         shipp.setAttribute("class", "disp");
+        sound.removeAttribute("class", "disp");
+        sound.setAttribute("class", "uk-icon-button");
         instructions.setAttribute("class", "disp");
         if(!interval){
             startGame();
@@ -531,10 +592,25 @@ window.onload = function(){
 
     document.getElementById("restartButton").onclick = function() {
         restartButton.setAttribute("class","disp");
+        main.setAttribute("class","disp");
         if(!interval){
             restart();
         }
     };
+
+    document.getElementById("main").onclick = function() {
+        location.reload(true);
+    };
+
+    document.getElementById("sound").onclick = function() {
+        audio.pause();
+        jump.src = undefined;
+        impact.src = undefined;
+        shooting.src = undefined;
+        dead.src = undefined;
+        gOver.src = undefined;
+        gComplete.src = undefined;
+    }
 }
 
 addEventListener('keydown', function(event){
@@ -553,13 +629,11 @@ addEventListener('keydown', function(event){
         jump.play();
     }
     if(event.keyCode === 40){
-        bullet.direction = 'right';
-        shipRightBullets.push(new Bullet('right', ship.x, ship.y));
         shooting.play();
+        shipRightBullets.push(new RightBullet(ship.x, ship.y));
     }
     if(event.keyCode === 38){
-        bullet.direction = 'up';
-        shipUpBullets.push(new Bullet('up', ship.x, ship.y));
         shooting.play();
+        shipUpBullets.push(new UpBullet(ship.x, ship.y));
     }
-})
+});
