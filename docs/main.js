@@ -227,6 +227,34 @@ class FinalEnemy {
     }
 }
 
+class Explosion {
+    constructor(x, y, width, height) {
+        this.x = x - 10;
+        this.y = y - 10;
+        this.width = width + 20;
+        this.height = height + 20;
+        this.image = new Image();
+        this.image.src = './images/explosion.png';
+    }
+    draw () { 
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+}
+
+class Shock {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.width = 120;
+        this.height = 70;
+        this.image = new Image();
+        this.image.src = './images/impact.png';
+    }
+    draw () { 
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+}
+
 class RightBullet {
     constructor(x, y) {
         this.x = x + 100;
@@ -335,6 +363,8 @@ function drawCraters() {
         } 
         crater.draw();
         if(ship.collision(crater)){
+            let shock = new Shock (ship.x, ship.y);
+            shock.draw();
             impact.play();
             craters.splice(index, 1); 
             impacts++;
@@ -343,7 +373,7 @@ function drawCraters() {
 }
 
 function generateEnemies() {
-    if (frames >= 1200 && frames <= 6900 && (frames % 280 == 0 || frames % 1000 == 0)){
+    if (frames >= 800 && frames <= 6900 && (frames % 280 == 0 || frames % 1000 == 0)){
         let enemy = new Enemy();
         enemies.push(enemy);
     }
@@ -356,6 +386,8 @@ function drawEnemies() {
         } 
         enemy.draw();
         if(ship.collision(enemy)){
+            let shock = new Shock (ship.x, ship.y);
+            shock.draw();
             impact.play();
             enemies.splice(index, 1);
             impacts++;
@@ -390,6 +422,8 @@ function drawSkyEnemies() {
         } 
         skyEnemy1.draw();
         if(ship.collision(skyEnemy1)){
+            let shock = new Shock (ship.x, ship.y);
+            shock.draw();
             impact.play();
             skyEnemies1.splice(index, 1);
             impacts++;
@@ -402,6 +436,8 @@ function drawSkyEnemies() {
             }
             skyEnemy1Bullet.draw();
             if (skyEnemy1Bullet.collision(ship)) {
+                let shock = new Shock (ship.x, ship.y);
+                shock.draw();
                 impact.play();
                 skyEnemy1Bullets.splice(i, 1)
                 impacts++;
@@ -415,6 +451,8 @@ function drawSkyEnemies() {
         } 
         skyEnemy2.draw();
         if(ship.collision(skyEnemy2)){
+            let shock = new Shock (ship.x, ship.y);
+            shock.draw();
             impact.play();
             skyEnemies2.splice(index, 1);
             impacts++;
@@ -427,6 +465,8 @@ function drawSkyEnemies() {
             }
             skyEnemy2Bullet.draw();
             if (skyEnemy2Bullet.collision(ship)) {
+                let shock = new Shock (ship.x, ship.y);
+                shock.draw();
                 impact.play();
                 skyEnemy2Bullets.splice(i, 1)
                 impacts++;
@@ -452,6 +492,8 @@ function drawRightBullets() {
         rightBullet.draw();
         enemies.forEach((enemy, index) => {
             if(rightBullet.collision(enemy)) {
+                let explosion = new Explosion (enemy.x, enemy.y, enemy.width, enemy.height);
+                explosion.draw();
                 shipRightBullets.splice(i, 1)
                 enemies.splice(index, 1)
                 dead.play();
@@ -476,6 +518,8 @@ function drawUpBullets() {
         upBullet.draw();
         skyEnemies1.forEach((skyEnemy1, index) => {
             if(upBullet.collision(skyEnemy1)) {
+                let explosion = new Explosion (skyEnemy1.x, skyEnemy1.y, skyEnemy1.width, skyEnemy1.height);
+                explosion.draw();
                 shipUpBullets.splice(i, 1)
                 skyEnemies1.splice(index, 1)
                 dead.play();
@@ -484,6 +528,8 @@ function drawUpBullets() {
         })
         skyEnemies2.forEach((skyEnemy2, index) => {
             if(upBullet.collision(skyEnemy2)) {
+                let explosion = new Explosion (skyEnemy2.x, skyEnemy2.y, skyEnemy2.width, skyEnemy2.height);
+                explosion.draw();
                 shipUpBullets.splice(i, 1)
                 skyEnemies2.splice(index, 1)
                 dead.play();
@@ -496,7 +542,7 @@ function drawUpBullets() {
 function generateFinalEnemyBullet() {
     if (frames >= 6900 && frames % 120 == 0){
         let posY = randomNum(finalEnemy.y, finalEnemy.y + 50)
-        let finalEnemyBullet = new Bullet('enemy', finalEnemy.x, posY);
+        let finalEnemyBullet = new EnemyBullet('enemy', finalEnemy.x, posY);
         finalEnemyBullets.push(finalEnemyBullet);
     }
 }
@@ -509,6 +555,8 @@ function drawFinalEnemyBullet() {
         }
         finalEnemyBullet.draw();
         if (finalEnemyBullet.collision(ship)) {
+            let shock = new Shock (ship.x, ship.y);
+            shock.draw();
             impact.play();
             finalEnemyBullets.splice(i, 1)
             impacts++;
@@ -519,7 +567,9 @@ function drawFinalEnemyBullet() {
 function game_Over() {
     if (impacts > 30) {
         background.gameOver();
-    } else if (shots >= 50){
+    } else if (shots > 50){
+        let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
+        explosion.draw();
         background.gameComplete();
     }
 }
@@ -576,6 +626,12 @@ window.onload = function(){
         ship.x = 440;
         ship.y = 300;
         audio.currentTime = 0;
+        jump.src = "./sounds/jump.mp3";
+        impact.src = "./sounds/impact.mp3";
+        shooting.src = "./sounds/shot.mp3";
+        dead.src = "./sounds/dead enemy.mp3";
+        gOver.src = "./sounds/game over.mp3";
+        gComplete.src = "./sounds/winner.mp3";
         startGame();
     }
 
@@ -593,6 +649,7 @@ window.onload = function(){
     };
 
     document.getElementById("restartButton").onclick = function() {
+        finalEnemy.visible = false;
         restartButton.setAttribute("class","disp");
         main.setAttribute("class","disp");
         soundOn.removeAttribute("class", "disp");
