@@ -21,6 +21,8 @@ var gOver = new Audio();
     gOver.src = "./sounds/game over.mp3"
 var gComplete = new Audio();
     gComplete.src = "./sounds/winner.mp3"
+var player1 = localStorage.getItem("playermijo") || 0;
+var player2 = localStorage.getItem("playermija") || 0;
 
 class Background {
     constructor() {
@@ -56,13 +58,92 @@ class Background {
         ctx.fillRect(300, 150, 400, 200);
         ctx.fillStyle = 'white';
         ctx.font = "25px pixelart";
-        ctx.fillText ("YOU WIN!", 400, 210);
+        ctx.fillText ("GAME COMPLETE", 335, 210);
         ctx.font = "20px pixelart";
         ctx.fillText ("YOUR SCORE " + score, 350, 250);
         audio.pause();
         gComplete.play();
         interval = null;
         restartButton.removeAttribute("class","disp");
+        main.removeAttribute("class","disp");
+    }
+    gameOver2() {
+        clearInterval(interval);
+        ctx.fillStyle = 'mediumorchid';
+        ctx.fillRect(297, 147, 406, 206);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(300, 150, 400, 200);
+        ctx.fillStyle = 'white';
+        ctx.font = "25px pixelart";
+        ctx.fillText ("GAME OVER", 390, 210);
+        ctx.font = "20px pixelart";
+        ctx.fillText ("YOUR SCORE " + score, 350, 250);
+        localStorage.setItem("playermijo", score);
+        audio.pause();
+        gOver.play();
+        interval = null;
+        restart2Button.removeAttribute("class","disp");
+        main.removeAttribute("class","disp");
+    }
+    gameComplete2() {
+        clearInterval(interval);
+        ctx.fillStyle = 'mediumorchid';
+        ctx.fillRect(297, 147, 406, 206);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(300, 150, 400, 200);
+        ctx.fillStyle = 'white';
+        ctx.font = "25px pixelart";
+        ctx.fillText ("GAME COMPLETE", 335, 210);
+        ctx.font = "20px pixelart";
+        ctx.fillText ("YOUR SCORE " + score, 350, 250);
+        audio.pause();
+        gComplete.play();
+        interval = null;
+        restart2Button.removeAttribute("class","disp");
+        main.removeAttribute("class","disp");
+    }
+    gameOver3() {
+        clearInterval(interval);
+        ctx.fillStyle = 'mediumorchid';
+        ctx.fillRect(297, 97, 406, 256);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(300, 100, 400, 250);
+        ctx.fillStyle = 'white';
+        ctx.font = "25px pixelart";
+        ctx.fillText ("GAME OVER", 390, 155);
+        ctx.font = "20px pixelart";
+        ctx.fillText ("YOUR SCORE " + score, 350, 195);
+        localStorage.setItem("playermija", score)
+        player1 = localStorage.getItem("playermijo");
+        player2 = localStorage.getItem("playermija");
+        ctx.font = "15px pixelart"
+        ctx.fillText ("PLAYER 1: " + player1, 390, 235);
+        ctx.fillText ("PLAYER 2: " + player2, 390, 265);
+        audio.pause();
+        gOver.play();
+        interval = null;
+        main.removeAttribute("class","disp");
+    }
+    gameComplete3() {
+        clearInterval(interval);
+        ctx.fillStyle = 'mediumorchid';
+        ctx.fillRect(297, 97, 406, 256);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(300, 100, 400, 250);
+        ctx.fillStyle = 'white';
+        ctx.font = "25px pixelart";
+        ctx.fillText ("GAME COMPLETE", 335, 155);
+        ctx.font = "20px pixelart";
+        ctx.fillText ("YOUR SCORE " + score, 350, 195);
+        localStorage.setItem("playermija", score)
+        player1 = localStorage.getItem("playermijo");
+        player2 = localStorage.getItem("playermija");
+        ctx.font = "15px pixelart"
+        ctx.fillText ("PLAYER 1: " + player1, 380, 235);
+        ctx.fillText ("PLAYER 2: " + player2, 380, 265);
+        audio.pause();
+        gComplete.play();
+        interval = null;
         main.removeAttribute("class","disp");
     }
     draw(){
@@ -93,7 +174,7 @@ class HealthBar {
         if (impacts > 20) this.image.src = './images/h8.png';
         if (impacts > 23) this.image.src = './images/h9.png';
         if (impacts > 26) this.image.src = './images/h10.png';
-        if (impacts > 29) this.image.src = './images/h11.png';
+        if (impacts > 28) this.image.src = './images/h11.png';
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
@@ -585,12 +666,32 @@ function drawFinalEnemyBullet() {
 }
 
 function game_Over() {
-    if (impacts > 30) {
+    if (impacts >= 30) {
         background.gameOver();
     } else if (shots > 50){
         let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
         explosion.draw();
         background.gameComplete();
+    }
+}
+
+function game_Over2() {
+    if (impacts >= 30) {
+        background.gameOver2();
+    } else if (shots > 50){
+        let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
+        explosion.draw();
+        background.gameComplete2();
+    }
+}
+
+function game_Over3() {
+    if (impacts >= 30) {
+        background.gameOver3();
+    } else if (shots > 50){
+        let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
+        explosion.draw();
+        background.gameComplete3();
     }
 }
 
@@ -655,8 +756,104 @@ window.onload = function(){
         startGame();
     }
 
+    function update2(){
+        frames++;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        background.draw();
+        ship.draw();
+        healthBar.draw();
+        ctx.fillStyle = 'white'
+        ctx.font = "13px pixelart";
+        ctx.fillText('SCORE ' + score, 40, 45);
+        ctx.fillText('IMPACTS ' + impacts, 270, 45);
+        generateCraters();
+        drawCraters();
+        generateEnemies();
+        drawEnemies();
+        generateSkyEnemies();
+        drawSkyEnemies();
+        generateFinalEnemy();
+        drawRightBullets();
+        drawUpBullets();
+        generateFinalEnemyBullet();
+        drawFinalEnemyBullet();
+        ship.velxl *= ship.friction;
+        ship.velxr *= ship.friction;
+        if (ship.x + ship.velxl < 880) ship.x += ship.velxl;
+        if (ship.x - ship.velxr > 15) ship.x += ship.velxr;
+        game_Over2();
+    }
+
+    function startGame2() {
+        startedGame = true;
+        interval = setInterval(update2, 1000/75);
+        audio.play();
+    }
+
+    function restart2(){
+        frames = 0;        
+        score = 0;
+        impacts = 0;
+        shots = 0;
+        craters = [];
+        enemies = [];
+        skyEnemies1 = [];
+        skyEnemies2 = [];
+        shipRightBullets = [];
+        shipUpBullets = [];
+        skyEnemy1Bullets = [];
+        skyEnemy2Bullets = [];
+        finalEnemyBullets = [];
+        ship.x = 440;
+        ship.y = 300;
+        audio.currentTime = 0;
+        jump.src = "./sounds/jump.mp3";
+        impact.src = "./sounds/impact.mp3";
+        shooting.src = "./sounds/shot.mp3";
+        dead.src = "./sounds/dead enemy.mp3";
+        gOver.src = "./sounds/game over.mp3";
+        gComplete.src = "./sounds/winner.mp3";
+        startGame3();
+    }
+
+    function update3(){
+        frames++;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        background.draw();
+        ship.draw();
+        healthBar.draw();
+        ctx.fillStyle = 'white'
+        ctx.font = "13px pixelart";
+        ctx.fillText('SCORE ' + score, 40, 45);
+        ctx.fillText('IMPACTS ' + impacts, 270, 45);
+        generateCraters();
+        drawCraters();
+        generateEnemies();
+        drawEnemies();
+        generateSkyEnemies();
+        drawSkyEnemies();
+        generateFinalEnemy();
+        drawRightBullets();
+        drawUpBullets();
+        generateFinalEnemyBullet();
+        drawFinalEnemyBullet();
+        ship.velxl *= ship.friction;
+        ship.velxr *= ship.friction;
+        if (ship.x + ship.velxl < 880) ship.x += ship.velxl;
+        if (ship.x - ship.velxr > 15) ship.x += ship.velxr;
+        game_Over3();
+    }
+
+    function startGame3() {
+        startedGame = true;
+        interval = setInterval(update3, 1000/75);
+        audio.play();
+        console.log(score)
+    }  
+
     document.getElementById("startButton").onclick = function() {
         startButton.setAttribute("class","disp");
+        start2Button.setAttribute("class","disp");
         shipp.setAttribute("class", "disp");
         soundOn.removeAttribute("class", "disp");
         soundOn.setAttribute("class", "uk-icon-button");
@@ -665,6 +862,20 @@ window.onload = function(){
         instructions.setAttribute("class", "disp");
         if(!interval){
             startGame();
+        }
+    };
+
+    document.getElementById("start2Button").onclick = function() {
+        startButton.setAttribute("class","disp");
+        start2Button.setAttribute("class","disp");
+        shipp.setAttribute("class", "disp");
+        soundOn.removeAttribute("class", "disp");
+        soundOn.setAttribute("class", "uk-icon-button");
+        soundOff.removeAttribute("class", "disp");
+        soundOff.setAttribute("class", "uk-icon-button");
+        instructions.setAttribute("class", "disp");
+        if(!interval){
+            startGame2();
         }
     };
 
@@ -681,8 +892,22 @@ window.onload = function(){
         }
     };
 
+    document.getElementById("restart2Button").onclick = function() {
+        finalEnemy.visible = false;
+        restart2Button.setAttribute("class","disp");
+        main.setAttribute("class","disp");
+        soundOn.removeAttribute("class", "disp");
+        soundOn.setAttribute("class", "uk-icon-button");
+        soundOff.removeAttribute("class", "disp");
+        soundOff.setAttribute("class", "uk-icon-button");
+        if(!interval){
+            restart2();
+        }
+    };
+
     document.getElementById("main").onclick = function() {
         location.reload(true);
+        localStorage.clear();
     };
 
     document.getElementById("soundOn").onclick = function() {

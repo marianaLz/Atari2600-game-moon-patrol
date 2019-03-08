@@ -17,22 +17,25 @@
     <canvas id="canvas" width="1000" height="500"></canvas>
   </div>
   <img id="shipp" src="./images/main-background.png" alt="moon-patrol-ship" style="width:50%;">
-  <button id="startButton" class="uk-button"><b>START GAME</b></button>
+  <button id="startButton" class="uk-button"><b>1 PLAYER</b></button>
+  <button id="start2Button" class="uk-button"><b>2 PLAYERs</b></button>
   <button id="restartButton" class="disp"><b>RESTART</b></button>
+  <button id="restart2Button" class="disp"><b>NEXT PLAYER</b></button>
   <button id="main" class="disp"><b>MAIN MENU</b></button>
   <button id="soundOff" class="uk-icon-button disp"><img src="./images/audioOff.png" alt="audioOff"></button>
   <button id="soundOn" class="uk-icon-button disp"><img src="./images/audio.png" alt="audioOn"></button>
   <button id="instructions" class="uk-button uk-button-danger" uk-toggle="target: #inst" type="button"><b>INSTRUCTIONS</b></button>
   <div id="inst" uk-modal>
       <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      <h3 class="uk-modal-title">Instructions</h3>
-      <p>Help us save the moon from enemies. <br>
-        Use the space bar to jump. <br>
-        Use the up and down arrows to shoot. <br>
-        Use the left and right arrows to move. <br>
-        <img src="./images/arrows.png" alt="arrows"><br>
-        Good luck!</p>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h3 class="uk-modal-title">Instructions</h3>
+        <p>Help us save the moon from enemies. <br>
+          Use the space bar to jump. <br>
+          Use the up and down arrows to shoot. <br>
+          Use the left and right arrows to move. <br>
+          <img src="./images/arrows.png" alt="arrows"><br>
+          Multiplayer mode is by turns.<br>
+          Good luck!</p>
     </div>
   </div>
   <script src="main.js"></script>

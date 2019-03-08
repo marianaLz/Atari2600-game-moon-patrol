@@ -27,18 +27,36 @@ body #shipp {
 body #startButton {
     cursor: pointer;
     font-size: 20px;
-    background-color: rgba(144, 238, 144, 0.95);
+    background-color: lightgoldenrodyellow;
     color: black;
     padding: 5px 10px;
     border-radius: 5px;
-    margin-left: 823px;
-    margin-top: -315px;
+    margin-left: 760px;
+    margin-top: -230px;
     position: absolute;
 }
 
 body #startButton:hover {
     cursor: pointer;
-    background-color: palegreen;
+    background-color: palegoldenrod;
+    transition: all .3s;
+}
+
+body #start2Button {
+    cursor: pointer;
+    font-size: 20px;
+    background-color: lightgoldenrodyellow;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 920px;
+    margin-top: -230px;
+    position: absolute;
+}
+
+body #start2Button:hover {
+    cursor: pointer;
+    background-color: palegoldenrod;
     transition: all .3s;
 }
 
@@ -51,12 +69,32 @@ body #restartButton {
     padding: 10px 10px;
     border: 0;
     border-radius: 5px;
-    margin-left: 480px;
+    margin-left: 470px;
     margin-top: -220px;
     position: absolute;
 }
 
 body #restartButton:hover {
+    cursor: pointer;
+    background-color: palegreen;
+    transition: all .3s;
+}
+
+body #restart2Button {
+    cursor: pointer;
+    font-size: 20px;
+    font-family: "Segoe UI";
+    background-color: rgba(144, 238, 144, 0.95);
+    color: black;
+    padding: 10px 10px;
+    border: 0;
+    border-radius: 5px;
+    margin-left: 465px;
+    margin-top: -220px;
+    position: absolute;
+}
+
+body #restart2Button:hover {
     cursor: pointer;
     background-color: palegreen;
     transition: all .3s;
@@ -69,7 +107,7 @@ body #instructions {
     padding: 5px 10px;
     border-radius: 5px;
     margin-left: 810px;
-    margin-top: -240px;
+    margin-top: -320px;
     position: absolute;
 }
 
@@ -82,7 +120,7 @@ body #main {
     padding: 10px 10px;
     border: 0;
     border-radius: 5px;
-    margin-left: 620px;
+    margin-left: 630px;
     margin-top: -220px;
     position: absolute;
 }
