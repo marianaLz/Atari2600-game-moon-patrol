@@ -23,7 +23,7 @@ var gComplete = new Audio();
     gComplete.src = "./sounds/winner.mp3"
 var player1 = localStorage.getItem("playermijo") || 0;
 var player2 = localStorage.getItem("playermija") || 0;
-
+//comment
 class Background {
     constructor() {
         this.x = 0;
