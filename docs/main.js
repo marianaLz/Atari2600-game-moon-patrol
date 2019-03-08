@@ -16,14 +16,14 @@ var impact = new Audio();
 var shooting = new Audio();
     shooting.src = "./sounds/shot.mp3"
 var dead = new Audio();
-    dead.src = "./sounds/dead enemy.mp3"
+    dead.src = "./sounds/dead-enemy.mp3"
 var gOver = new Audio();
-    gOver.src = "./sounds/game over.mp3"
+    gOver.src = "./sounds/game-over.mp3"
 var gComplete = new Audio();
     gComplete.src = "./sounds/winner.mp3"
-var player1 = localStorage.getItem("playermijo") || 0;
-var player2 = localStorage.getItem("playermija") || 0;
-//comment
+var player1 = localStorage.getItem("player1") || 0;
+var player2 = localStorage.getItem("player2") || 0;
+
 class Background {
     constructor() {
         this.x = 0;
@@ -78,7 +78,7 @@ class Background {
         ctx.fillText ("GAME OVER", 390, 210);
         ctx.font = "20px pixelart";
         ctx.fillText ("YOUR SCORE " + score, 350, 250);
-        localStorage.setItem("playermijo", score);
+        localStorage.setItem("player1", score);
         audio.pause();
         gOver.play();
         interval = null;
@@ -96,7 +96,7 @@ class Background {
         ctx.fillText ("GAME COMPLETE", 335, 210);
         ctx.font = "20px pixelart";
         ctx.fillText ("YOUR SCORE " + score, 350, 250);
-        localStorage.setItem("playermijo", score);
+        localStorage.setItem("player1", score);
         audio.pause();
         gComplete.play();
         interval = null;
@@ -114,9 +114,9 @@ class Background {
         ctx.fillText ("GAME OVER", 390, 105);
         ctx.font = "20px pixelart";
         ctx.fillText ("YOUR SCORE " + score, 350, 145);
-        localStorage.setItem("playermija", score)
-        player1 = localStorage.getItem("playermijo");
-        player2 = localStorage.getItem("playermija");
+        localStorage.setItem("player2", score)
+        player1 = localStorage.getItem("player1");
+        player2 = localStorage.getItem("player2");
         ctx.font = "15px pixelart"
         ctx.fillText ("PLAYER 1: " + player1, 390, 185);
         ctx.fillText ("PLAYER 2: " + player2, 390, 215);
@@ -138,9 +138,9 @@ class Background {
         ctx.fillText ("GAME COMPLETE", 335, 105);
         ctx.font = "20px pixelart";
         ctx.fillText ("YOUR SCORE " + score, 350, 145);
-        localStorage.setItem("playermija", score)
-        player1 = localStorage.getItem("playermijo");
-        player2 = localStorage.getItem("playermija");
+        localStorage.setItem("player2", score)
+        player1 = localStorage.getItem("player1");
+        player2 = localStorage.getItem("player2");
         ctx.font = "15px pixelart"
         ctx.fillText ("PLAYER 1: " + player1, 380, 185);
         ctx.fillText ("PLAYER 2: " + player2, 380, 215);
@@ -670,33 +670,17 @@ function drawFinalEnemyBullet() {
     }); 
 }
 
-function game_Over() {
+function game_Over(num) {
     if (impacts > 20) {
-        background.gameOver();
+        if (num === 1) background.gameOver();
+        if (num === 2) background.gameOver2();
+        if (num === 3) background.gameOver3();
     } else if (shots > 30){
         let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
         explosion.draw();
-        background.gameComplete();
-    }
-}
-
-function game_Over2() {
-    if (impacts > 20) {
-        background.gameOver2();
-    } else if (shots >30){
-        let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
-        explosion.draw();
-        background.gameComplete2();
-    }
-}
-
-function game_Over3() {
-    if (impacts > 20) {
-        background.gameOver3();
-    } else if (shots > 30){
-        let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
-        explosion.draw();
-        background.gameComplete3();
+        if (num === 1) background.gameComplete();
+        if (num === 2) background.gameComplete2();
+        if (num === 3) background.gameComplete3();
     }
 }
 
@@ -726,7 +710,7 @@ window.onload = function(){
         ship.velxr *= ship.friction;
         if (ship.x + ship.velxl < 880) ship.x += ship.velxl;
         if (ship.x - ship.velxr > 15) ship.x += ship.velxr;
-        game_Over();
+        game_Over(1);
     }
 
     function startGame() {
@@ -786,7 +770,7 @@ window.onload = function(){
         ship.velxr *= ship.friction;
         if (ship.x + ship.velxl < 880) ship.x += ship.velxl;
         if (ship.x - ship.velxr > 15) ship.x += ship.velxr;
-        game_Over2();
+        game_Over(2);
     }
 
     function startGame2() {
@@ -846,7 +830,7 @@ window.onload = function(){
         ship.velxr *= ship.friction;
         if (ship.x + ship.velxl < 880) ship.x += ship.velxl;
         if (ship.x - ship.velxr > 15) ship.x += ship.velxr;
-        game_Over3();
+        game_Over(3);
     }
 
     function startGame3() {
@@ -936,8 +920,8 @@ window.onload = function(){
         jump.src = "./sounds/jump.mp3";
         impact.src = "./sounds/impact.mp3";
         shooting.src = "./sounds/shot.mp3";
-        dead.src = "./sounds/dead enemy.mp3";
-        gOver.src = "./sounds/game over.mp3";
+        dead.src = "./sounds/dead-enemy.mp3";
+        gOver.src = "./sounds/game-over.mp3";
         gComplete.src = "./sounds/winner.mp3";
     }
     
