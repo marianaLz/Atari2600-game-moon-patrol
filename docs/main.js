@@ -96,6 +96,7 @@ class Background {
         ctx.fillText ("GAME COMPLETE", 335, 210);
         ctx.font = "20px pixelart";
         ctx.fillText ("YOUR SCORE " + score, 350, 250);
+        localStorage.setItem("playermijo", score);
         audio.pause();
         gComplete.play();
         interval = null;
@@ -105,20 +106,22 @@ class Background {
     gameOver3() {
         clearInterval(interval);
         ctx.fillStyle = 'mediumorchid';
-        ctx.fillRect(297, 97, 406, 256);
+        ctx.fillRect(297, 47, 406, 306);
         ctx.fillStyle = 'black';
-        ctx.fillRect(300, 100, 400, 250);
+        ctx.fillRect(300, 50, 400, 300);
         ctx.fillStyle = 'white';
         ctx.font = "25px pixelart";
-        ctx.fillText ("GAME OVER", 390, 155);
+        ctx.fillText ("GAME OVER", 390, 105);
         ctx.font = "20px pixelart";
-        ctx.fillText ("YOUR SCORE " + score, 350, 195);
+        ctx.fillText ("YOUR SCORE " + score, 350, 145);
         localStorage.setItem("playermija", score)
         player1 = localStorage.getItem("playermijo");
         player2 = localStorage.getItem("playermija");
         ctx.font = "15px pixelart"
-        ctx.fillText ("PLAYER 1: " + player1, 390, 235);
-        ctx.fillText ("PLAYER 2: " + player2, 390, 265);
+        ctx.fillText ("PLAYER 1: " + player1, 390, 185);
+        ctx.fillText ("PLAYER 2: " + player2, 390, 215);
+        ctx.font = "20px pixelart";
+        ctx.fillText (player1 > player2 ? "WIN PLAYER 1": "WIN PLAYER 2", 380, 265);
         audio.pause();
         gOver.play();
         interval = null;
@@ -127,20 +130,22 @@ class Background {
     gameComplete3() {
         clearInterval(interval);
         ctx.fillStyle = 'mediumorchid';
-        ctx.fillRect(297, 97, 406, 256);
+        ctx.fillRect(297, 47, 406, 306);
         ctx.fillStyle = 'black';
-        ctx.fillRect(300, 100, 400, 250);
+        ctx.fillRect(300, 50, 400, 300);
         ctx.fillStyle = 'white';
         ctx.font = "25px pixelart";
-        ctx.fillText ("GAME COMPLETE", 335, 155);
+        ctx.fillText ("GAME COMPLETE", 335, 105);
         ctx.font = "20px pixelart";
-        ctx.fillText ("YOUR SCORE " + score, 350, 195);
+        ctx.fillText ("YOUR SCORE " + score, 350, 145);
         localStorage.setItem("playermija", score)
         player1 = localStorage.getItem("playermijo");
         player2 = localStorage.getItem("playermija");
         ctx.font = "15px pixelart"
-        ctx.fillText ("PLAYER 1: " + player1, 380, 235);
-        ctx.fillText ("PLAYER 2: " + player2, 380, 265);
+        ctx.fillText ("PLAYER 1: " + player1, 380, 185);
+        ctx.fillText ("PLAYER 2: " + player2, 380, 215);
+        ctx.font = "20px pixelart";
+        ctx.fillText (player1 > player2 ? "WIN PLAYER 1": "WIN PLAYER 2", 380, 265);
         audio.pause();
         gComplete.play();
         interval = null;
@@ -164,17 +169,17 @@ class HealthBar {
         this.image.src = './images/h1.png';
     }
     draw(){
-        if (impacts < 3) this.image.src = './images/h1.png';
-        if (impacts > 2) this.image.src = './images/h2.png';
-        if (impacts > 5) this.image.src = './images/h3.png';
-        if (impacts > 8) this.image.src = './images/h4.png';
-        if (impacts > 11) this.image.src = './images/h5.png';
-        if (impacts > 14) this.image.src = './images/h6.png';
-        if (impacts > 17) this.image.src = './images/h7.png';
-        if (impacts > 20) this.image.src = './images/h8.png';
-        if (impacts > 23) this.image.src = './images/h9.png';
-        if (impacts > 26) this.image.src = './images/h10.png';
-        if (impacts > 28) this.image.src = './images/h11.png';
+        if (impacts < 2) this.image.src = './images/h1.png';
+        if (impacts > 1) this.image.src = './images/h2.png';
+        if (impacts > 3) this.image.src = './images/h3.png';
+        if (impacts > 5) this.image.src = './images/h4.png';
+        if (impacts > 7) this.image.src = './images/h5.png';
+        if (impacts > 9) this.image.src = './images/h6.png';
+        if (impacts > 11) this.image.src = './images/h7.png';
+        if (impacts > 13) this.image.src = './images/h8.png';
+        if (impacts > 15) this.image.src = './images/h9.png';
+        if (impacts > 17) this.image.src = './images/h10.png';
+        if (impacts > 19) this.image.src = './images/h11.png';
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
@@ -430,7 +435,7 @@ var skyEnemy2Bullets = [];
 var finalEnemyBullets = [];
 
 function generateCraters() {
-    if (frames <= 6900 && (frames % 220 == 0 || frames % 550 == 0)) {
+    if (frames <= 4000 && (frames % 220 == 0 || frames % 550 == 0)) {
         let crater = new Crater();
         craters.push(crater);
     }
@@ -454,7 +459,7 @@ function drawCraters() {
 }
 
 function generateEnemies() {
-    if (frames >= 800 && frames <= 6900 && (frames % 280 == 0 || frames % 1000 == 0)){
+    if (frames >= 800 && frames <= 4000 && (frames % 280 == 0 || frames % 1000 == 0)){
         let enemy = new Enemy();
         enemies.push(enemy);
     }
@@ -481,7 +486,7 @@ function randomNum(max, min){
 }
 
 function generateSkyEnemies() {
-    if (frames >= 3000 && frames <= 6900 && (frames % 300 == 0 || frames && 1000 == 0)){
+    if (frames >= 2000 && frames <= 4000 && (frames % 300 == 0 || frames && 1000 == 0)){
         let posy1 = randomNum(40, 200)
         let posy2 = randomNum(40, 200)
         let skyEnemy1 = new SkyEnemy1(0, posy1);
@@ -557,7 +562,7 @@ function drawSkyEnemies() {
 }
 
 function generateFinalEnemy() {
-    if (frames >= 6900){
+    if (frames >= 4000){
         ship.x = 200;
         finalEnemy.draw();
         finalEnemy.visible = true;
@@ -641,7 +646,7 @@ function drawUpBullets() {
 }
 
 function generateFinalEnemyBullet() {
-    if (frames >= 6900 && frames % 120 == 0){
+    if (frames >= 4000 && frames % 120 == 0){
         let posY = randomNum(finalEnemy.y, finalEnemy.y + 50)
         let finalEnemyBullet = new EnemyBullet('enemy', finalEnemy.x, posY);
         finalEnemyBullets.push(finalEnemyBullet);
@@ -666,9 +671,9 @@ function drawFinalEnemyBullet() {
 }
 
 function game_Over() {
-    if (impacts >= 30) {
+    if (impacts > 20) {
         background.gameOver();
-    } else if (shots > 50){
+    } else if (shots > 30){
         let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
         explosion.draw();
         background.gameComplete();
@@ -676,9 +681,9 @@ function game_Over() {
 }
 
 function game_Over2() {
-    if (impacts >= 30) {
+    if (impacts > 20) {
         background.gameOver2();
-    } else if (shots > 50){
+    } else if (shots >30){
         let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
         explosion.draw();
         background.gameComplete2();
@@ -686,9 +691,9 @@ function game_Over2() {
 }
 
 function game_Over3() {
-    if (impacts >= 30) {
+    if (impacts > 20) {
         background.gameOver3();
-    } else if (shots > 50){
+    } else if (shots > 30){
         let explosion = new Explosion (finalEnemy.x - 10, finalEnemy.y - 10, finalEnemy.width + 20, finalEnemy.height + 20);
         explosion.draw();
         background.gameComplete3();
@@ -726,7 +731,7 @@ window.onload = function(){
 
     function startGame() {
         startedGame = true;
-        interval = setInterval(update, 1000/75);
+        interval = setInterval(update, 1000/100);
         audio.play();
     }
 
@@ -786,7 +791,7 @@ window.onload = function(){
 
     function startGame2() {
         startedGame = true;
-        interval = setInterval(update2, 1000/75);
+        interval = setInterval(update2, 1000/100);
         audio.play();
     }
 
@@ -846,7 +851,7 @@ window.onload = function(){
 
     function startGame3() {
         startedGame = true;
-        interval = setInterval(update3, 1000/75);
+        interval = setInterval(update3, 1000/100);
         audio.play();
         console.log(score)
     }  
