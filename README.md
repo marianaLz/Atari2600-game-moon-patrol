@@ -6,7 +6,7 @@ A Moon patrol game clone create to Ironhack Web Development course (module 1).
 
 Moon Patrol is an arcade game. Is a unique side scrolling shooter game in which you piloted a moon buggy that had to cross the rocky and pitted terrain of the moon while avoiding attacks from over head alien crafts. As you proceeded across the surface of the moon, several layers of the background scroll by independently, making Moon Patrol the first game that featured parallax scrolling.
 
-![](https://raw.githubusercontent.com/marianaLz/Atari2600-game-moon-patrol/master/docs/images/logo.jpg)
+![](https://thumbs.gfycat.com/GenerousMeekCougar-small.gif)
 
 ## Game Play
 
