@@ -120,8 +120,8 @@ class Background {
         ctx.font = "15px pixelart"
         ctx.fillText ("PLAYER 1: " + player1, 390, 185);
         ctx.fillText ("PLAYER 2: " + player2, 390, 215);
-        ctx.font = "20px pixelart";
-        ctx.fillText (player1 > player2 ? "WIN PLAYER 1": "WIN PLAYER 2", 380, 265);
+        ctx.font = "25px pixelart";
+        ctx.fillText (player1 > player2 ? "PLAYER 1 WINS!": "PLAYER 2 WINS!", 340, 260);
         audio.pause();
         gOver.play();
         interval = null;
@@ -142,10 +142,10 @@ class Background {
         player1 = localStorage.getItem("player1");
         player2 = localStorage.getItem("player2");
         ctx.font = "15px pixelart"
-        ctx.fillText ("PLAYER 1: " + player1, 380, 185);
-        ctx.fillText ("PLAYER 2: " + player2, 380, 215);
-        ctx.font = "20px pixelart";
-        ctx.fillText (player1 > player2 ? "WIN PLAYER 1": "WIN PLAYER 2", 380, 265);
+        ctx.fillText ("PLAYER 1: " + player1, 390, 185);
+        ctx.fillText ("PLAYER 2: " + player2, 390, 215);
+        ctx.font = "25px pixelart";
+        ctx.fillText (player1 > player2 ? "PLAYER 1 WINS!": "PLAYER 2 WINS!", 340, 260);
         audio.pause();
         gComplete.play();
         interval = null;
